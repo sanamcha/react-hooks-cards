@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function useFlip(initialFlipState = true) {
-  const [isFlipped, setFlipped] = useState(initialFlipState);
+function useFlip(initialFlip = true) {
+  const [isFlipped, setFlipped] = useState(initialFlip);
 
   const flip = () => {
     setFlipped(isUp => !isUp);
@@ -11,12 +11,12 @@ function useFlip(initialFlipState = true) {
   return [isFlipped, flip];
 }
 
-function useAxios(keyInLS, baseUrl) {
-  const [responses, setResponses] = useLocalStorage(keyInLS);
+function useAxios(key, baseUrl) {
+  const [responses, setResponses] = useLocalStorage(key);
 
-  const addResponseData = async (formatter = data => data, restOfUrl = "") => {
+  const addResponseData = async (res = data => data, restOfUrl = "") => {
     const response = await axios.get(`${baseUrl}${restOfUrl}`);
-    setResponses(data => [...data, formatter(response.data)]);
+    setResponses(data => [...data, res(response.data)]);
   };
 
   const clearResponses = () => setResponses([]);
